@@ -1,0 +1,33 @@
+pretrainedURL = "https://www.mathworks.com/supportfiles/vision/data/yolov2IndoorObjectDetector.zip";
+pretrainedFolder = fullfile(tempdir,"pretrainedNetwork");
+pretrainedNetworkZip = fullfile(pretrainedFolder, "yolov2IndoorObjectDetector.zip"); 
+
+if ~exist(pretrainedNetworkZip,"file")
+    mkdir(pretrainedFolder);
+    disp("Downloading pretrained network (98 MB)...");
+    websave(pretrainedNetworkZip, pretrainedURL);
+end
+
+unzip(pretrainedNetworkZip, pretrainedFolder);
+
+pretrainedNetwork = fullfile(pretrainedFolder, "yolov2IndoorObjectDetector.mat");
+pretrained = load(pretrainedNetwork);
+detector = pretrained.detector;
+%Detect objects and their labels in the image using the detect function.
+cam=webcam(2);
+figure;
+while ishandle(1) % Check if the figure is still open
+    % Acquire a frame from the webcam
+    I = imresize((snapshot(cam)),[450,450]);
+
+
+[bbox, score, label]  = detect(detector, I);
+%Visualize the predictions by overlaying the detected bounding boxes on the
+%image using the insertObjectAnnotation function.
+
+imshow(I);
+showShape("rectangle", bbox, Label=label);
+drawnow;
+end
+
+clear cam
