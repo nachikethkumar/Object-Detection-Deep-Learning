@@ -45,11 +45,13 @@ augmentedTrainingData = transform(scaledData_Tdata, @augmentData);
 
 %% % Create YOLO architecture
 
-anchorBoxes = estimateAnchorBoxes(scaledData_Tdata,13)
+anchorBoxes = estimateAnchorBoxes(scaledData_Tdata,6)
 
 inputSize = [450 450 3];
-numClasses = 13;
-network = resnet50();
+numClasses = 6;
+%network = resnet50();
+%network = resnet50('Weights','none');
+network=lgraph_1
 featureLayer = "activation_40_relu";
 lgraph = yolov2Layers(inputSize, numClasses, anchorBoxes, network, featureLayer); 
 

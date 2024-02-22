@@ -6,3 +6,18 @@ function data = scaleGT(data)
     % data{2} is the bounding box
     data{2} = bboxresize(data{2},scale);
 end
+
+function data = scaleGT(data)  
+    targetSize = [450 450];
+
+    % data{1} is the image
+    if size(data{1}, 3) == 1  % Check if the image is grayscale
+        data{1} = cat(3, data{1}, data{1}, data{1});  % Convert grayscale to RGB
+    end
+    
+    % data{1} is the image
+    scale = targetSize./size(data{1},[1 2]);
+    data{1} = imresize(data{1},targetSize);
+    % data{2} is the bounding box
+    data{2} = bboxresize(data{2},scale);
+end
